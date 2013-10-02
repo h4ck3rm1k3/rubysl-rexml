@@ -1,2 +1,2 @@
-require "rubysl/rexml/rexml"
+require "rexml/rexml"
 require "rubysl/rexml/version"
