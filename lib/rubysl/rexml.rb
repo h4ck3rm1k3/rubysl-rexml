@@ -1,7 +1,1 @@
-require "rubysl-rexml/version"
-
-module RubySL
-  module Rexml
-    # Your code goes here...
-  end
-end
+require "rubysl/rexml/version"
