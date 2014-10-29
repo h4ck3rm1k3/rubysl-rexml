@@ -1,6 +1,7 @@
-# Rubysl::Rexml
+# RubySL::Rexml
 
-TODO: Write a gem description
+This gem packages the MRI standard library REXML. See README.MRI.md for
+license, authors, and description of the original library.
 
 ## Installation
 
