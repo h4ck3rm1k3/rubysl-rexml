@@ -10,16 +10,16 @@ module REXML
   class Text < Child
     include Comparable
     # The order in which the substitutions occur
-    SPECIALS = [ /&(?!#?[\w-]+;)/u, /</u, />/u, /"/u, /'/u, /\r/u ]
+    SPECIALS = [ /&(?!#?[\w-]+;)/, /</, />/, /"/, /'/, /\r/ ]
     SUBSTITUTES = ['&amp;', '&lt;', '&gt;', '&quot;', '&apos;', '&#13;']
     # Characters which are substituted in written strings
     SLAICEPS = [ '<', '>', '"', "'", '&' ]
-    SETUTITSBUS = [ /&lt;/u, /&gt;/u, /&quot;/u, /&apos;/u, /&amp;/u ]
+    SETUTITSBUS = [ /&lt;/, /&gt;/, /&quot;/, /&apos;/, /&amp;/ ]
 
     # If +raw+ is true, then REXML leaves the value alone
     attr_accessor :raw
 
-    NEEDS_A_SECOND_CHECK = /(<|&((#{Entity::NAME});|(#0*((?:\d+)|(?:x[a-fA-F0-9]+)));)?)/um
+    NEEDS_A_SECOND_CHECK = /(<|&((#{Entity::NAME});|(#0*((?:\d+)|(?:x[a-fA-F0-9]+)));)?)/m
     NUMERICENTITY = /&#0*((?:\d+)|(?:x[a-fA-F0-9]+));/
     VALID_CHAR = [
       0x9, 0xA, 0xD,
@@ -40,18 +40,18 @@ module REXML
         }.join +
       ']*$')
     else
-      VALID_XML_CHARS = /^(
+      VALID_XML_CHARS = /^(?:
            [\x09\x0A\x0D\x20-\x7E]            # ASCII
-         | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-         |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
-         | [\xE1-\xEC\xEE][\x80-\xBF]{2}      # straight 3-byte
-         |  \xEF[\x80-\xBE]{2}                #
-         |  \xEF\xBF[\x80-\xBD]               # excluding U+fffe and U+ffff
-         |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
-         |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
-         | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-         |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
-       )*$/nx;
+         | [\u00C2-\u00DF][\u0080-\u00BF]             # non-overlong 2-byte
+         |  \u00E0[\u00A0-\u00BF][\u0080-\u00BF]        # excluding overlongs
+         | [\u00E1-\u00EC\u00EE][\u0080-\u00BF]{2}      # straight 3-byte
+         |  \u00EF[\u0080-\u00BE]{2}                #
+         |  \u00EF\u00BF[\u0080-\u00BD]               # excluding U+fffe and U+ffff
+         |  \u00ED[\u0080-\u009F][\u0080-\u00BF]        # excluding surrogates
+         |  \u00F0[\u0090-\u00BF][\u0080-\u00BF]{2}     # planes 1-3
+         | [\u00F1-\u00F3][\u0080-\u00BF]{3}          # planes 4-15
+         |  \u00F4[\u0080-\u008F][\u0080-\u00BF]{2}     # plane 16
+       )*$/x;
     end
 
     # Constructor
@@ -139,7 +139,7 @@ module REXML
             end
           end
         else
-          string.scan(/[\x00-\x7F]|[\x80-\xBF][\xC0-\xF0]*|[\xC0-\xF0]/n) do |c|
+          string.scan(/[\u0000-\u007F]|[\u0080-\u00BF][\u00C0-\u00F0]*|[\u00C0-\u00F0]/) do |c|
             case c.unpack('U')
             when *VALID_CHAR
             else

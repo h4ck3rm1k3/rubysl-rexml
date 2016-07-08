@@ -18,7 +18,7 @@ module REXML
     ENTITYDEF = "(?:#{ENTITYVALUE}|(?:#{EXTERNALID}(#{NDATADECL})?))"
     PEDECL = "<!ENTITY\\s+(%)\\s+#{NAME}\\s+#{PEDEF}\\s*>"
     GEDECL = "<!ENTITY\\s+#{NAME}\\s+#{ENTITYDEF}\\s*>"
-    ENTITYDECL = /\s*(?:#{GEDECL})|(?:#{PEDECL})/um
+    ENTITYDECL = /\s*(?:#{GEDECL})|(?:#{PEDECL})/m
 
     attr_reader :name, :external, :ref, :ndata, :pubid
 
@@ -124,7 +124,7 @@ module REXML
       rv
     end
 
-    PEREFERENCE_RE = /#{PEREFERENCE}/um
+    PEREFERENCE_RE = /#{PEREFERENCE}/m
     # Returns the value of this entity.  At the moment, only internal entities
     # are processed.  If the value contains internal references (IE,
     # %blah;), those are replaced with their values.  IE, if the doctype
@@ -146,7 +146,7 @@ module REXML
             else
               sum += entity_value.bytesize
             end
-            rv.gsub!( /%#{entity_reference.join};/um, entity_value )
+            rv.gsub!( /%#{entity_reference.join};/m, entity_value )
           end
         end
         return rv

@@ -8,7 +8,7 @@ module REXML
     # The expanded name of the object, valid if name is set
     attr_accessor :prefix
     include XMLTokens
-    NAMESPLIT = /^(?:(#{NCNAME_STR}):)?(#{NCNAME_STR})/u
+    NAMESPLIT = /^(?:(#{NCNAME_STR}):)?(#{NCNAME_STR})/
 
     # Sets the name and the expanded name
     def name=( name )
